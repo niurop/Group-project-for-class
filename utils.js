@@ -1,4 +1,4 @@
-const epsilon = 0.01
+ε = 0.01
 log = console.log
 min = Math.min
 max = Math.max
@@ -27,10 +27,11 @@ function download(data, filename, type) {
   }
 }
 
-
-
 zipWith = (xs, ys, f) =>  range(min(xs.length, ys.length)).map(i => f(xs[i], ys[i], i))
 range = n => Array(n).fill(0).map((_, i) => i)
+range2 = (n, m) => range(m).map(i => range(n).map(j => [j,i]))
+mapN = (n, f, Ls) => n === 0 ? f(Ls) : Ls.map(ls => mapN(n-1, f, ls))
+applyN = (n, f) => x => n === 0 ? x : applyN(n-1, f)(f(x))
 
 sumV = V => V.reduce(sumRR)
 mulV = V => V.reduce(mulRR)
@@ -53,7 +54,6 @@ neg = a => [negR, negV, negM][numericLevel(a)](a)
 sum = (a, b) => numericLevel(a) === numericLevel(b) ? [sumRR, sumVV, sumMM][numericLevel(a)](a, b) : console.error("Types of elements don't match")
 mul = (a, b) => [[mulRR, flip(mulVR), flip(mulMR)], [mulVR, mulVV, (a, b) => mulMM([a], b)], [mulMR, mulMV, mulMM]][numericLevel(a)][numericLevel(b)](a, b)
 
-
 changePartialyV = (I, M, V) => zipWith(I, V, (i, v, m) => M[m] ? v : i)
 setPartialyV = (I, M, v) => zipWith(I, M, (i, m) => m ? v : i)
 
@@ -61,15 +61,15 @@ randomFrom = L => s => L.length == 0 ? random(s) : L[(random(s) * L.length) | 0 
 randomV = (V, s) => range(s).map(randomFrom(V))
 randomM = (V, w, h) => range(h).map(x => range(w).map(randomFrom(V)))
 
-slightnudgeVV = (s => (V, W) => sumVV(V, mulVR(W, s)))(epsilon)
-slightnudgeMM = (s => (M, N) => sumMM(M, mulMR(M, s)))(epsilon)
+slightnudgeVV = (s => (V, W) => sumVV(V, mulVR(W, s)))(ε)
+slightnudgeMM = (s => (M, N) => sumMM(M, mulMR(M, s)))(ε)
 slightnudgeNN = (s => (A, B) => zipWith(A, zipWith(A.map(l => l.M), B.map(l => l.M), slightnudgeMM), (A, N) => ({M: N.M, F: A.F})))
 flip = f => (x, y) => f(y, x)
 applay = (f, x) => f(x)
 applayVV = (f, x) => zipWith(f, x, applay)
 
 id = t => t
-clamp = t => min(1, max(0, t))
+clamp = (a, b) => t => min(b, max(a, t))
 scale = (f, x, y) => t => y * f(t / x)
 translate = (f, x, y) => t => f(t - x) + y
 logistic = t => 1 / (1 + Math.exp(-t))
