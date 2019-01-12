@@ -5,6 +5,12 @@ max = Math.max
 random = Math.random
 abs = x => x < 0 ? -x : x
 sgn = x => x < 0 ? -1 : x > 0 ? 1 : 0
+avg = X => sumV(X)/X.length
+sin = x => Math.sin(x*Math.PI)
+cos = x => Math.cos(x*Math.PI)
+MIN = L => L.reduce((a,b) => min(a,b))
+MAX = L => L.reduce((a,b) => max(a,b))
+
 
 // Function to download data to a file
 toJSON = data => JSON.stringify(data, (key, value) => typeof value === "function" ? "/Function(" + value.toString() + ")/" : value)
@@ -32,6 +38,20 @@ range = n => Array(n).fill(0).map((_, i) => i)
 range2 = (n, m) => range(m).map(i => range(n).map(j => [j,i]))
 mapN = (n, f, Ls) => n === 0 ? f(Ls) : Ls.map(ls => mapN(n-1, f, ls))
 applyN = (n, f) => x => n === 0 ? x : applyN(n-1, f)(f(x))
+
+abstractionClass = (List, eq) => {
+  list = []
+  for(e in List){
+    for(i = 0; i < list.length && !eq(List[e], list[i][0]); i++);
+    if(i === list.length)
+    {
+      list.push([List[e]])
+    }
+    else
+      list[i].push(List[e])
+  }
+  return list
+}
 
 sumV = V => V.reduce(sumRR)
 mulV = V => V.reduce(mulRR)
@@ -61,9 +81,9 @@ randomFrom = L => s => L.length == 0 ? random(s) : L[(random(s) * L.length) | 0 
 randomV = (V, s) => range(s).map(randomFrom(V))
 randomM = (V, w, h) => range(h).map(x => range(w).map(randomFrom(V)))
 
-slightnudgeVV = (s => (V, W) => sumVV(V, mulVR(W, s)))(ε)
-slightnudgeMM = (s => (M, N) => sumMM(M, mulMR(M, s)))(ε)
-slightnudgeNN = (s => (A, B) => zipWith(A, zipWith(A.map(l => l.M), B.map(l => l.M), slightnudgeMM), (A, N) => ({M: N.M, F: A.F})))
+slightnudgeVV = (s => (V, W) => sumVV(V, mulVR(W, s)))
+slightnudgeMM = (s => (M, N) => sumMM(M, mulMR(M, s)))
+slightnudgeNN = (s => (A, B) => zipWith(A, zipWith(A.map(l => l.M), B.map(l => l.M), slightnudgeMM(s)), (A, N) => ({M: N, F: A.F})))
 flip = f => (x, y) => f(y, x)
 applay = (f, x) => f(x)
 applayVV = (f, x) => zipWith(f, x, applay)

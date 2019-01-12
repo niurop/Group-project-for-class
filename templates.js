@@ -21,11 +21,12 @@ getTileColor = tile => {
 Sensor = (type, arg1, arg2) => {
   switch (type){
     case 'base': return (world, entitie) => getTileColor(world.tiles[entitie.x|0][entitie.y|0])
-    case 'hunger' : return (_, entitie) => [entitie.hunger]
-    case 'health' : return (_, entitie) => [entitie.health]
-    case 'vision' : return (world, entitie) => [0,0,0,0]
-    case 'memory' : return (_, entitie) => entitie.memory
-    default       : return (_, __) => []
+    case 'hunger'   : return (_, entitie) => [entitie.hunger]
+    case 'health'   : return (_, entitie) => [entitie.health]
+    case 'vision'   : return (world, entitie) => [0,0,0,0]
+    case 'nextTile' : return (world, entitie) => getTileColor(world.tiles[(entitie.y + Math.sin(entitie.heding))|0][(entitie.x + Math.cos(entitie.heding))|0])
+    case 'memory'   : return (_, entitie) => entitie.memory
+    default         : return (_, __) => []
   }
 }
 
