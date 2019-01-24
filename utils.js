@@ -1,11 +1,10 @@
-ε = 0.01
 log = console.log
 min = Math.min
 max = Math.max
 random = Math.random
 abs = x => x < 0 ? -x : x
 sgn = x => x < 0 ? -1 : x > 0 ? 1 : 0
-avg = X => sumV(X)/X.length
+avg = X => sumV(X) / X.length
 sin = x => Math.sin(x*Math.PI)
 cos = x => Math.cos(x*Math.PI)
 MIN = L => L.reduce((a,b) => min(a,b))
@@ -33,20 +32,22 @@ function download(data, filename, type) {
   }
 }
 
-zipWith = (xs, ys, f) =>  range(min(xs.length, ys.length)).map(i => f(xs[i], ys[i], i))
+zipWith = (xs, ys, f) =>  range( min(xs.length, ys.length) ).map(i => f(xs[i], ys[i], i))
 range = n => Array(n).fill(0).map((_, i) => i)
 range2 = (n, m) => range(m).map(i => range(n).map(j => [j,i]))
 mapN = (n, f, Ls) => n === 0 ? f(Ls) : Ls.map(ls => mapN(n-1, f, ls))
-applyN = (n, f) => x => n === 0 ? x : applyN(n-1, f)(f(x))
+applyN = (n, f) => x => {
+  let temp = x
+  while(n-- > 0) temp = f(temp)
+  return temp
+}
 
 abstractionClass = (List, eq) => {
-  list = []
+  let list = []
   for(e in List){
     for(i = 0; i < list.length && !eq(List[e], list[i][0]); i++);
     if(i === list.length)
-    {
       list.push([List[e]])
-    }
     else
       list[i].push(List[e])
   }
@@ -63,7 +64,7 @@ mulVV = (v, w) => zipWith(v, w, mulRR)
 sumVV = (v, w) => zipWith(v, w, sumRR)
 mulMR = (M, a) => M.map(v => mulVR(v, a))
 mulMV = (M, v) => M.map(m => dotVV(m,v))
-transposeM = M => M[0].map((x,i) => M.map(x => x[i]))
+transposeM = M => M[0].map((_, i) => M.map(x => x[i]))
 mulMM = (A, B) => transposeM(transposeM(B).map(x => mulMV(A,x)))
 sumMM = (A, B) => zipWith(A, B, sumVV)
 negR = x => -x
@@ -77,7 +78,7 @@ mul = (a, b) => [[mulRR, flip(mulVR), flip(mulMR)], [mulVR, mulVV, (a, b) => mul
 changePartialyV = (I, M, V) => zipWith(I, V, (i, v, m) => M[m] ? v : i)
 setPartialyV = (I, M, v) => zipWith(I, M, (i, m) => m ? v : i)
 
-randomFrom = L => s => L.length == 0 ? random(s) : L[(random(s) * L.length) | 0 % L.length] 
+randomFrom = L => s => L.length == 0 ? random(s) : L[(random(s) * L.length) | 0 % L.length]
 randomV = (V, s) => range(s).map(randomFrom(V))
 randomM = (V, w, h) => range(h).map(x => range(w).map(randomFrom(V)))
 
@@ -103,5 +104,5 @@ layersevaluator = (Ms, Fs) => V => zipWith(Ms, Fs, (M, F) => layerevaluator(M, F
 
 distribution = t => -Math.log(1/t - 1)
 
-randomNNdata = (I, D, O, Vs, Fs) => zipWith([I].concat(D), D.concat([O]), (a, b) => ({M: randomM(Vs, a,b), F: randomV(Fs, b)}))
+randomNNdata = (I, D, O, Fs) => zipWith([I].concat(D), D.concat([O]), (a, b) => ({M: randomM([], a,b), F: randomV(Fs, b)}))
 NNfromdata = D => V => D.map(L => layerevaluator(L.M, L.F)).reduce((v, f) => f(v), V)

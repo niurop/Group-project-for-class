@@ -30,4 +30,4 @@ Sensor = (type, arg1, arg2) => {
   }
 }
 
-randomName = () => randomFrom(['Bob','Elisa'])(0)
+randomName = () => randomFrom(['Bob','Elisa','Rayan','Marc','Paul','Tom','Peter','Josh','Samuel','Kunegunda','Lucas','Casanova','Zorro','Slanderman','Agent700','Legolas','Leonidas','JanIIISobieski','Adolf','Jozef','CiasteczkowyPotwor','Batman','Pigeon','Filemon','Superman','Spiderman','Slodziak','Putin','Trump','Dyktator','Boss','King','Melodias','Lufy','Ban','Naruto','Kakashi','Bolt'])(0)
