@@ -86,8 +86,8 @@ slightnudgeVV = (s => (V, W) => sumVV(V, mulVR(W, s)))
 slightnudgeMM = (s => (M, N) => sumMM(M, mulMR(M, s)))
 slightnudgeNN = (s => (A, B) => zipWith(A, zipWith(A.map(l => l.M), B.map(l => l.M), slightnudgeMM(s)), (A, N) => ({M: N, F: A.F})))
 flip = f => (x, y) => f(y, x)
-applay = (f, x) => f(x)
-applayVV = (f, x) => zipWith(f, x, applay)
+apply = (f, x) => f(x)
+applyVV = (f, x) => zipWith(f, x, apply)
 
 id = t => t
 clamp = (a, b) => t => min(b, max(a, t))
@@ -99,8 +99,8 @@ nonepositivelinear = t => min(0, t)
 compose = (f, g) => t => f(g(t))
 threshold = x => t => t >= x ? 1 : 0
 
-layerevaluator = (M, F) => V => applayVV(F, mulMV(M, V))
-layersevaluator = (Ms, Fs) => V => zipWith(Ms, Fs, (M, F) => layerevaluator(M, F)).reduce(flip(applay), V)
+layerevaluator = (M, F) => V => applyVV(F, mulMV(M, V))
+layersevaluator = (Ms, Fs) => V => zipWith(Ms, Fs, (M, F) => layerevaluator(M, F)).reduce(flip(apply), V)
 
 distribution = t => -Math.log(1/t - 1)
 

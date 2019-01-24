@@ -1,8 +1,8 @@
-let tiles = data => ({name:"", treversable:true, speed:1, food:0, foodregen:0, foodcap:0, harmful:false, damage:0, ...data})
+let tiles = data => ({name:"", traversable:true, speed:1, food:0, foodregen:0, foodcap:0, harmful:false, damage:0, ...data})
 
 templates = {
   tiles: [tiles({name:"normal"}),
-          tiles({name:"block", treversable:false}),
+          tiles({name:"block", traversable:false}),
           tiles({name:"food", food:10, foodregen:1, foodcap:100}),
           tiles({name:"lava", speed:.5, harmful:true, damage:1})],
 }
@@ -30,4 +30,4 @@ Sensor = (type, arg1, arg2) => {
   }
 }
 
-randomName = () => randomFrom(['Bob','Elisa','Rayan','Marc','Paul','Tom','Peter','Josh','Samuel','Kunegunda','Lucas','Casanova','Zorro','Slanderman','Agent700','Legolas','Leonidas','JanIIISobieski','Adolf','Jozef','CiasteczkowyPotwor','Batman','Pigeon','Filemon','Superman','Spiderman','Slodziak','Putin','Trump','Dyktator','Boss','King','Melodias','Lufy','Ban','Naruto','Kakashi','Bolt'])(0)
+randomName = () => randomFrom(['Bob','Elisa','Rayan','Marc','Paul','Tom','Peter','Josh','Samuel','Kunegunda','Lucas','Casanova','Zorro','Slanderman','Agent700','Legolas','Leonidas','JanIIISobieski','Adolf','Jozef','CiasteczkowyPotwor','Batman','Pigeon','Filemon','Superman','Spiderman','Slodziak','Putin','Trump','Dyktator','Boss','King','Melodias','Lufy','Ban','Naruto','Kakashi','Bolt','Goku','Vegita','Ash','Brok','Misty','Plastois'])(0)
